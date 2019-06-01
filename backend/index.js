@@ -4,12 +4,17 @@ const express = require( "express" );
 const app = express();
 const fs = require( "fs" );
 const image2base64 = require( "image-to-base64" );
+const bodyParser = require( 'body-parser' );
 
 
 const token = "867867394:AAE2IQRq0wu0XI1UpwHLg4RUNpKPH3RKI0E";
 const dbName = "t-shirt-shop";
 
 const bot = new TelegramBot( token, { polling: true } );
+
+app.use( bodyParser.json() );
+app.use( bodyParser.urlencoded( { extended: false } ) );
+
 
 //-------------------------------------------get query-----------------------------
 
@@ -29,6 +34,26 @@ app.get( "/t-shirts", ( req, res ) => {
     }
   } );
 
+} );
+
+//-------------------------------------------post query-----------------------------
+
+app.post( "/orders", ( req, res ) => {
+  const order = req.body.order
+  MongoClient.connect( "mongodb://Nivolves:Danya2000@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
+    if ( error ) {
+      res.sendStatus( 500 );
+    } else {
+      const db = database.db( dbName );
+      db.collection( "orders" ).insert( order, ( error, result ) => {
+        if ( error ) {
+          res.sendStatus( 500 );
+        } else {
+          res.sendStatus( 200 );
+        }
+      } );
+    }
+  } );
 } );
 
 // ------------------------------------------ Add good -----------------------------
@@ -115,6 +140,7 @@ function Add( id ) {
   addPhoto = () => {
     bot.sendMessage( id, "Добавьте фото", { parse_mode: "Markdown" } );
     bot.on( "photo", ( msg ) => {
+      console.log( msg );
       const photoId = msg.photo[ msg.photo.length - 1 ].file_id;
       if ( fs.readdirSync( "./img/" ) == false ) {
         bot.downloadFile( photoId, "./img" ).catch( err => bot.sendMessage( id, err, { parse_mode: "Markdown" } ) );
@@ -187,6 +213,29 @@ function Delete( id ) {
   } );
 }
 
+// ------------------------------------------ View orders -----------------------------
+
+function View( id ) {
+  MongoClient.connect( "mongodb://Nivolves:Danya2000@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
+    if ( error ) {
+      bot.sendMessage( id, error, { parse_mode: "Markdown" } );
+    } else {
+      const db = database.db( dbName );
+      db.collection( "orders" ).find().toArray( ( error, data ) => {
+        if ( error ) {
+          bot.sendMessage( id, error, { parse_mode: "Markdown" } );
+        } else {
+          data.map( ( { name, phone, email, total, basket } ) => {
+            bot.sendMessage( id,
+              `name: ${ name } \n phone: ${ phone } \n e-mail: ${ email }\n total price: ${ total }\n Goods: \n[ ${ basket.map( ( { name, price } ) => ( `{good name: ${ name } \n good price: ${ price }}` ) ) } ]`
+              , { parse_mode: "Markdown" } );
+          } );
+        }
+      } );
+    }
+  } );
+}
+
 
 
 bot.onText( /\/tShirts/, ( msg, match ) => {
@@ -210,7 +259,13 @@ bot.onText( /\/tShirts/, ( msg, match ) => {
             text: "Удалить товар",
             callback_data: "delete"
           },
-        ]
+        ],
+        [
+          {
+            text: "Посмотреть заказы",
+            callback_data: "view all"
+          },
+        ],
       ]
     }
   } );
@@ -230,6 +285,9 @@ bot.on( "callback_query", query => {
       break;
     case "delete":
       Delete( id );
+      break;
+    case "view all":
+      View( id );
       break;
     default:
       break;
