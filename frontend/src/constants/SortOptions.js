@@ -1,0 +1,1 @@
+export const SORT_OPTIONS = [ "Lowest to highest", "Highest to lowest" ];

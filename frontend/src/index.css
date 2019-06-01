@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,600,700&display=swap&subset=cyrillic,cyrillic-ext,latin-ext');
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  /*Colors*/
+  --black-color: #000;
+  --button-black-color: #0c0b10;
+  --modal-bg: rgba(0, 0, 0, 0.8);
+  --primary-color: #1b1a20;
+  --good-status-color: #32CD32;
+  --active-color: #eabf00;
+  --error-color: #a94442;
+  --white-color: #fff;
+  --input-border: #ececec;
+  /*Font-size*/
+  --error-font-size: 12px;
+  --small-font-size: 13px;
+  --primary-font-size: 16px;
+  --medium-font-size: 22px;
+  --big-font-size: 30px;
+  /*Font-weights*/
+  --primary-font-weight: 400;
+  --bold-font-weight: 500;
+
+
+  min-width: 320px;
+  margin: 0;
+  color: var(--primary-color);
+  font-size: var(--primary-font-size);
+  font-weight: var(--primary-font-weight);
+  font-family: 'Roboto', sans-serif;
+}
+
+input, button {
+  outline: none;
+}
+
+.shop {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.fixed {
+  overflow: hidden;
+}
+
+#root {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.x-mark {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.x-mark > path:hover {
+  fill: var(--white-color);
+}
+
+@media only screen and (min-width: 480px) {
+  .shop {
+    padding: 50px;
+    margin-top: 30px;
+  } 
+}
