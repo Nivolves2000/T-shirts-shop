@@ -1,4 +1,4 @@
-# T-shirts-shop (Appenlication)
+# T-shirts-shop (Application)
 
 The idea is to create an administrative panel for the site in Telegram
 
