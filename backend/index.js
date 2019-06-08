@@ -7,7 +7,7 @@ const image2base64 = require( "image-to-base64" );
 const bodyParser = require( 'body-parser' );
 
 
-const token = "867867394:AAE2IQRq0wu0XI1UpwHLg4RUNpKPH3RKI0E";
+const token = "token";
 const dbName = "t-shirt-shop";
 
 const bot = new TelegramBot( token, { polling: true } );
@@ -19,7 +19,7 @@ app.use( bodyParser.urlencoded( { extended: false } ) );
 //-------------------------------------------get query-----------------------------
 
 app.get( "/t-shirts", ( req, res ) => {
-  MongoClient.connect( "mongodb://Nivolves:Danya2000@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
+  MongoClient.connect( "mongodb://UserName:Password@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
     if ( error ) {
       bot.sendMessage( id, error, { parse_mode: "Markdown" } );
     } else {
@@ -40,7 +40,7 @@ app.get( "/t-shirts", ( req, res ) => {
 
 app.post( "/orders", ( req, res ) => {
   const order = req.body.order
-  MongoClient.connect( "mongodb://Nivolves:Danya2000@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
+  MongoClient.connect( "mongodb://UserName:Password@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
     if ( error ) {
       res.sendStatus( 500 );
     } else {
@@ -68,7 +68,7 @@ function Add( id ) {
   }
 
   addToDB = ( good ) => {
-    MongoClient.connect( "mongodb://Nivolves:Danya2000@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
+    MongoClient.connect( "mongodb://UserName:Password@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
       if ( error ) {
         bot.sendMessage( id, error, { parse_mode: "Markdown" } );
       } else {
@@ -160,7 +160,7 @@ function Add( id ) {
 // ------------------------------------------ Show goods -----------------------------
 
 function Show( id ) {
-  MongoClient.connect( "mongodb://Nivolves:Danya2000@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
+  MongoClient.connect( "mongodb://UserName:Password@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
     if ( error ) {
       bot.sendMessage( id, error, { parse_mode: "Markdown" } );
     } else {
@@ -188,7 +188,7 @@ function Delete( id ) {
 
   deleteGood = () => {
     const _id = new require( 'mongodb' ).ObjectID( good._id );
-    MongoClient.connect( "mongodb://Nivolves:Danya2000@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
+    MongoClient.connect( "mongodb://UserName:Password@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
       if ( error ) {
         bot.sendMessage( id, error, { parse_mode: "Markdown" } );
       } else {
@@ -216,7 +216,7 @@ function Delete( id ) {
 // ------------------------------------------ View orders -----------------------------
 
 function View( id ) {
-  MongoClient.connect( "mongodb://Nivolves:Danya2000@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
+  MongoClient.connect( "mongodb://UserName:Password@ds149596.mlab.com:49596/t-shirt-shop", ( error, database ) => {
     if ( error ) {
       bot.sendMessage( id, error, { parse_mode: "Markdown" } );
     } else {
